@@ -101,8 +101,8 @@ def main(page: ft.Page):
 
     # ปุ่มและสี
     buttons = [
-        ["AC", "+/-", "%", "/", "^"],  # เพิ่มปุ่มยกกำลัง ^
-        ["7", "8", "9", "*", "!"],      # เพิ่มปุ่มแฟกทอเรียล !
+        ["AC", "+/-", "%", "/", "xʸ"],
+        ["7", "8", "9", "*", "x!"],  # เปลี่ยนปุ่มแฟกทอเรียลเป็น x!
         ["4", "5", "6", "-"],
         ["1", "2", "3", "+"],
         ["0", ".", "="]
@@ -117,7 +117,13 @@ def main(page: ft.Page):
         btns = []
         for j, text in enumerate(row):
             # สีปุ่ม
-            if text in ["/", "*", "-", "+", "=", "^", "!"]:
+            display_text = text
+            logic_value = text
+            if text == "xʸ":
+                logic_value = "^"  # เมื่อกด xʸ ให้ส่งค่า ^
+            if text == "x!":
+                logic_value = "!"  # เมื่อกด x! ให้ส่งค่า !
+            if text in ["/", "*", "-", "+", "=", "^", "!", "xʸ", "x!"]:
                 color = op_color
                 txt_color = text_white
             elif text in ["AC", "+/-", "%"]:
@@ -131,12 +137,12 @@ def main(page: ft.Page):
                 width = 130  # ปุ่ม 0 กว้างสองช่อง
             btns.append(
                 ft.ElevatedButton(
-                    text,
+                    display_text,
                     width=width,
                     height=60,
                     bgcolor=color,
                     color=txt_color,
-                    on_click=on_click,
+                    on_click=lambda e, v=logic_value: on_click(type('obj', (object,), {'control': type('obj', (object,), {'text': v})})()),
                     style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=30))
                 )
             )
